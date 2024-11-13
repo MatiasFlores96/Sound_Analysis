@@ -1,0 +1,153 @@
+---
+title: "TyAdeAA Clase 1"
+format: html
+editor: visual
+---
+
+```{r, message=FALSE, warning=FALSE}
+library(tuneR)
+library(seewave)
+library(rstudioapi)
+```
+
+```{r, message=FALSE, warning=FALSE}
+setwd(dirname(getActiveDocumentContext()$path))
+```
+
+```{r, message=FALSE, warning=FALSE}
+gato=readWave("cat_110.wav")
+perro=readWave("dog_barking_112.wav")
+```
+
+```{r, message=FALSE, warning=FALSE}
+perro
+```
+
+```{r}
+# sin(x)->Amplitud * sin(B(x+Desfase)) + DesplazamVertical
+t=seq(0,2,0.01)
+y1=sin(pi*t)
+plot(t,sin(pi*t),type="l",col="red",lwd=2);abline(0,0)
+points(t,2*sin(pi*t),type="l",col="green",lwd=5)
+# Cambiar frecuencia
+y2=sin(10*pi*t)
+points(t,y2,col="blue",type="l")
+
+
+
+```
+
+```{r}
+plot(t,sin(pi*t),type="l",col="red",lwd=2);abline(0,0)
+
+y3=y1+y2
+points(t,y3,col="blue",type="l")
+```
+
+```{r, message=FALSE, warning=FALSE}
+piano=readWave("10Piano.wav")
+violin=readWave("10Violins .wav")
+guitar=readWave("10Electric_Guitar.wav")
+```
+
+```{r}
+piano
+```
+
+```{r}
+violin
+```
+
+```{r}
+guitar
+```
+
+```{r}
+head(piano@left)
+```
+
+```{r}
+head(violin@left)
+```
+
+```{r}
+head(guitar@left)
+```
+
+```{r}
+oscillo(piano,from=1,to=2) #zoom
+axis(side=2,las=2) #escala eje Y
+
+
+
+```
+
+```{r}
+oscillo(violin,from=1,to=2) #zoom
+axis(side=2,las=2) #escala eje Y
+```
+
+```{r}
+oscillo(guitar,from=1,to=2) #zoom
+axis(side=2,las=2) #escala eje Y
+
+```
+
+```{r}
+spec(piano);axis(side=2,las=2)
+```
+
+```{r}
+spec(violin);axis(side=2,las=2)
+```
+
+```{r}
+spec(guitar);axis(side=2,las=2)
+```
+
+```{r}
+spectro(piano)
+spectro(piano, flim=c(1,2)) # zoom en y
+spectro(piano, flim=c(1,2),tlim=c(1,2)) #zoom en x
+spectro(piano, flimd=c(1,2)) # para ver formantes
+```
+
+```{r}
+spectro(violin)
+spectro(violin, flim=c(1,2)) # zoom en y
+spectro(violin, flim=c(1,2),tlim=c(1,2)) #zoom en x
+spectro(violin, flimd=c(1,2)) # para ver formantes
+
+```
+
+```{r}
+spectro(guitar)
+spectro(guitar, flim=c(1,2)) # zoom en y
+spectro(guitar, flim=c(1,2),tlim=c(1,2)) #zoom en x
+spectro(guitar, flimd=c(1,2)) # para ver formantes
+```
+
+```{r}
+base=rbind(piano@left, violin@left, guitar@left)
+base=data.frame(base)
+dim(base)
+```
+
+```{r}
+fix(base)
+```
+
+```{r}
+categ=c("P","v","g")
+categ=factor(categ)
+base=data.frame(base, categ)
+dim(base)
+```
+
+```{r}
+duracion =0.5
+sonido= bind(sine(523, duracion/2,xunit="time"), sine(523, duracion/2,xunit="time"),
+sine(587,duracion,xunit="time"), sine(523, duracion/2,xunit="time"))
+sonido=normalize(sonido,unit='16')
+play(sonido)
+```
